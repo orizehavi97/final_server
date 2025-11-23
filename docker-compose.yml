@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15
+    container_name: finalserver_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: finalserver_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Persist PostgreSQL data
+      - postgres_data:/var/lib/postgresql/data
+      # Auto-run initialization script on first startup
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - finalserver_network
+
+  # FastAPI Server Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finalserver_api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/finalserver_db
+      SECRET_KEY: 9c6629dbe3912dcf7c2682102a6d0a4dea86948679835e11fe3be7cbba0df741
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      HOST: 0.0.0.0
+      PORT: 8000
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Persist trained models on host machine
+      - ./models:/app/models
+      # Persist logs on host machine
+      - ./logs:/app/logs
+    networks:
+      - finalserver_network
+
+  # Admin Dashboard Service (Streamlit)
+  admin_dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: finalserver_admin_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/finalserver_db
+    depends_on:
+      db:
+        condition: service_healthy
+    command: streamlit run admin_dashboard.py --server.port=8501 --server.address=0.0.0.0
+    networks:
+      - finalserver_network
+
+  # User Dashboard Service (Streamlit)
+  user_dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: finalserver_user_dashboard
+    ports:
+      - "8502:8502"
+    environment:
+      API_BASE_URL: http://api:8000
+    depends_on:
+      - api
+    command: streamlit run user_dashboard.py --server.port=8502 --server.address=0.0.0.0
+    networks:
+      - finalserver_network
+
+# Named volume for PostgreSQL data persistence
+volumes:
+  postgres_data:
+    driver: local
+
+# Network for service communication
+networks:
+  finalserver_network:
+    driver: bridge

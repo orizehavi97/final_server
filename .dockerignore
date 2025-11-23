@@ -1,0 +1,82 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables (will be set in docker-compose.yml)
+.env
+.env.local
+.env.*.local
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (not needed in container)
+*.md
+docs/
+
+# Logs (will be mounted as volume)
+logs/
+*.log
+
+# Models (will be mounted as volume)
+models/*.pkl
+
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database files (database runs in separate container)
+*.db
+*.sqlite
+*.sqlite3
+
+# Postman collections (not needed in container)
+*.postman_collection.json
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Docker files themselves (not needed inside container)
+Dockerfile
+Dockerfile.*
+docker-compose.yml
+.dockerignore
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
