@@ -125,7 +125,7 @@ FINALSERVER/
 1. **Clone the repository**
    ```bash
    git clone https://github.com/orizehavi97/final_server.git
-   cd finalserver
+   cd final_server
    ```
 
 2. **Create a virtual environment**
@@ -220,152 +220,50 @@ streamlit run user_dashboard.py --server.port=8502
 
 ## 🐳 Docker Setup (Recommended)
 
-Docker provides the easiest way to run this application. With Docker, all dependencies, databases, and services are automatically configured and started with a single command - no manual setup required!
+Run the entire application stack with a single command using Docker Compose.
 
 ### Prerequisites
 
-- **Docker Desktop**: Download and install from https://www.docker.com/products/docker-desktop
-  - Windows: Docker Desktop for Windows
-  - macOS: Docker Desktop for Mac
-  - Linux: Docker Engine + Docker Compose
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-### What You Get
+### Quick Start
 
-When you run the application with Docker, you'll have access to:
-1. **PostgreSQL Database** (port 5432) - Stores users, models, and metadata
-2. **FastAPI Server** (port 8000) - REST API for machine learning operations
-3. **Admin Dashboard** (port 8501) - Web interface for managing users and viewing statistics
-4. **User Dashboard** (port 8502) - Web interface for training models and making predictions
-
-All components communicate automatically - just start the application and begin using it!
-
-### Quick Start with Docker
-
-#### 1. Clone the repository
 ```bash
+# Clone and navigate
 git clone https://github.com/orizehavi97/final_server.git
-cd finalserver
-```
+cd final_server
 
-#### 2. Start the application
-```bash
+# Start all services
 docker-compose up --build
 ```
 
-Wait for the startup process to complete. The first time you run this, Docker will:
-- Download required images (PostgreSQL, Python)
-- Build the application containers
-- Initialize the database with required tables
-- Start all services
+**Services:**
+- FastAPI Server: http://localhost:8000
+- API Documentation: http://localhost:8000/docs
+- Admin Dashboard: http://localhost:8501
+- User Dashboard: http://localhost:8502
 
-**First run:** Takes 2-3 minutes
-**Subsequent runs:** Takes 10-20 seconds
+### Commands
 
-#### 3. Access the application
-
-Once you see "Application startup complete" in the terminal, open your web browser and visit:
-
-- **API Documentation**: http://localhost:8000/docs - Interactive API testing interface
-- **Admin Dashboard**: http://localhost:8501 - Manage users and view statistics
-- **User Dashboard**: http://localhost:8502 - Train models and make predictions
-
-You can now start using the application!
-
-### Managing the Application
-
-**Start the application**
 ```bash
+# Start (foreground)
 docker-compose up
-```
-This starts all services and displays logs in your terminal. Press `Ctrl+C` to stop.
 
-**Start in background**
-```bash
+# Start (background)
 docker-compose up -d
-```
-Runs the application in the background, freeing up your terminal.
 
-**Stop the application**
-```bash
+# Stop (preserve data)
 docker-compose down
-```
-Stops all services. Your data (users, models, logs) is preserved.
 
-**View logs**
-```bash
-docker-compose logs -f
-```
-Shows real-time logs from all services.
-
-**Check status**
-```bash
-docker-compose ps
-```
-Lists all running containers and their status.
-
-**Fresh restart (delete all data)**
-```bash
+# Stop (remove all data)
 docker-compose down -v
+
+# View logs
+docker-compose logs -f
+
+# Rebuild
+docker-compose build --no-cache
 ```
-⚠️ **Warning:** This removes the database and all trained models. Use only if you want to start completely fresh.
-
-### Docker Architecture
-
-```
-┌─────────────────────────────────────────────────────┐
-│          Docker Compose Network                      │
-│                                                      │
-│  ┌──────────┐   ┌──────────┐   ┌──────────┐       │
-│  │    db    │◄──┤   api    │◄──┤  admin_  │       │
-│  │(postgres)│   │(fastapi) │   │dashboard │       │
-│  │:5432     │   │:8000     │   │:8501     │       │
-│  └──────────┘   └──────────┘   └──────────┘       │
-│       ▲                                             │
-│       │         ┌──────────┐                       │
-│       └─────────┤  user_   │                       │
-│                 │dashboard │                       │
-│                 │:8502     │                       │
-│                 └──────────┘                       │
-└─────────────────────────────────────────────────────┘
-```
-
-### Data Storage
-
-Your data persists between restarts:
-
-- **Database**: User accounts and model metadata are stored in a Docker volume
-- **Trained Models**: Saved in the `./models` folder on your computer
-- **Logs**: Application logs are saved in the `./logs` folder
-
-When you stop the application with `docker-compose down`, all your data remains safe. Only `docker-compose down -v` removes the database.
-
-### Configuration
-
-All configuration is pre-set in the `docker-compose.yml` file. You don't need to create or modify any environment files - the application works out of the box!
-
-### Troubleshooting
-
-**"Port already in use" error**
-
-Another application is using the required ports. Either:
-- Close the conflicting application, or
-- Edit `docker-compose.yml` to use different ports
-
-**Application won't start**
-
-1. Check Docker Desktop is running
-2. View logs: `docker-compose logs`
-3. Try rebuilding: `docker-compose build --no-cache`
-
-**Can't connect to the application**
-
-1. Wait 30 seconds after startup for all services to initialize
-2. Check all containers are running: `docker-compose ps`
-3. Verify you're using `localhost`, not `0.0.0.0`
-
-**Need to start fresh**
-
-Run `docker-compose down -v` to remove all data and start over.
 
 ---
 
