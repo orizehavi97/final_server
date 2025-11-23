@@ -11,21 +11,21 @@ A production-ready FastAPI server for machine learning model training and predic
 
 ## 📋 Table of Contents
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
 - [Quick Start](#quick-start)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Configuration](#configuration)
   - [Running the Application](#running-the-application)
-- [Docker Setup (Recommended)](#docker-setup-recommended)
-- [API Documentation](#api-documentation)
-- [ML Capabilities](#ml-capabilities)
-- [Usage Examples](#usage-examples)
-- [Security Features](#security-features)
-- [Token System](#token-system)
-- [Educational Purpose](#educational-purpose)
+- [Docker Setup (Recommended)](#-docker-setup-recommended)
+- [API Documentation](#-api-documentation)
+- [ML Capabilities](#-ml-capabilities)
+- [Usage Examples](#-usage-examples)
+- [Security Features](#-security-features)
+- [Token System](#-token-system)
+- [Educational Purpose](#-educational-purpose)
 
 ---
 
