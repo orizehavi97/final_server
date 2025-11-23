@@ -43,3 +43,31 @@ Sample dataset for predicting salary based on:
   "age": 30
 }
 ```
+
+---
+
+## customer_churn.csv
+Sample dataset for predicting customer churn (classification) based on:
+- **age**: Customer age
+- **income**: Annual income
+- **months_subscribed**: Duration of subscription in months
+- **support_calls**: Number of support calls made
+- **satisfaction_score**: Customer satisfaction score (1-5)
+- **churn**: Whether customer churned (0=No, 1=Yes) - target variable
+
+### Example usage:
+- **Model name**: `churn_model`
+- **Model type**: `logistic_regression` or `random_forest_classifier`
+- **Features**: `["age", "income", "months_subscribed", "support_calls", "satisfaction_score"]`
+- **Label**: `churn`
+
+### Test prediction:
+```json
+{
+  "age": 30,
+  "income": 55000,
+  "months_subscribed": 12,
+  "support_calls": 3,
+  "satisfaction_score": 3.5
+}
+```
