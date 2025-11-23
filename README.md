@@ -124,7 +124,7 @@ FINALSERVER/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/finalserver.git
+   git clone https://github.com/orizehavi97/final_server.git
    cd finalserver
    ```
 
@@ -153,20 +153,21 @@ FINALSERVER/
 
 2. **Set up environment variables**
 
-   Create a `.env` file in the project root:
-   ```env
-   DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/finalserver_db
-   SECRET_KEY=your-secret-key-here
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   HOST=0.0.0.0
-   PORT=8000
+   Copy the example file and edit it:
+   ```bash
+   cp .env.example .env
    ```
+
+   Edit `.env` and update:
+   - `YOUR_PASSWORD` - Your PostgreSQL password
+   - `your-secret-key-here` - Generate using command below
 
 3. **Generate SECRET_KEY**
    ```bash
    python -c "import secrets; print(secrets.token_hex(32))"
    ```
+
+   Copy the output and paste it in your `.env` file as the `SECRET_KEY` value.
 
 4. **Initialize database**
 
@@ -219,7 +220,7 @@ streamlit run user_dashboard.py --server.port=8502
 
 ## 🐳 Docker Setup (Recommended)
 
-**This is the easiest way to run the project!** Docker Compose will automatically set up PostgreSQL, FastAPI server, and both Streamlit dashboards with one command.
+Docker provides the easiest way to run this application. With Docker, all dependencies, databases, and services are automatically configured and started with a single command - no manual setup required!
 
 ### Prerequisites
 
@@ -228,98 +229,85 @@ streamlit run user_dashboard.py --server.port=8502
   - macOS: Docker Desktop for Mac
   - Linux: Docker Engine + Docker Compose
 
-### What Docker Setup Includes
+### What You Get
 
-The Docker setup creates **4 services**:
-1. **PostgreSQL Database** (port 5432) - Automatically initialized with tables
-2. **FastAPI Server** (port 8000) - Your ML API with JWT authentication
-3. **Admin Dashboard** (port 8501) - Streamlit dashboard for user management
-4. **User Dashboard** (port 8502) - Streamlit interface for ML operations
+When you run the application with Docker, you'll have access to:
+1. **PostgreSQL Database** (port 5432) - Stores users, models, and metadata
+2. **FastAPI Server** (port 8000) - REST API for machine learning operations
+3. **Admin Dashboard** (port 8501) - Web interface for managing users and viewing statistics
+4. **User Dashboard** (port 8502) - Web interface for training models and making predictions
 
-All services are **automatically connected** and configured. No manual setup required!
+All components communicate automatically - just start the application and begin using it!
 
 ### Quick Start with Docker
 
 #### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/finalserver.git
+git clone https://github.com/orizehavi97/final_server.git
 cd finalserver
 ```
 
-#### 2. Start all services (first time)
+#### 2. Start the application
 ```bash
 docker-compose up --build
 ```
 
-**What happens:**
-- Downloads PostgreSQL 15 image
-- Builds FastAPI and Streamlit images
-- Creates database and tables automatically (via init.sql)
-- Starts all 4 services
-- Services wait for dependencies (API waits for DB to be healthy)
+Wait for the startup process to complete. The first time you run this, Docker will:
+- Download required images (PostgreSQL, Python)
+- Build the application containers
+- Initialize the database with required tables
+- Start all services
 
-**First-time startup:** ~2-3 minutes (downloads images)
-**Subsequent startups:** ~10-20 seconds
+**First run:** Takes 2-3 minutes
+**Subsequent runs:** Takes 10-20 seconds
 
 #### 3. Access the application
 
-Once you see `Application startup complete` in the logs:
+Once you see "Application startup complete" in the terminal, open your web browser and visit:
 
-- **FastAPI Server**: http://localhost:8000
-- **API Documentation (Swagger)**: http://localhost:8000/docs
-- **Admin Dashboard**: http://localhost:8501
-- **User Dashboard**: http://localhost:8502
+- **API Documentation**: http://localhost:8000/docs - Interactive API testing interface
+- **Admin Dashboard**: http://localhost:8501 - Manage users and view statistics
+- **User Dashboard**: http://localhost:8502 - Train models and make predictions
 
-### Docker Commands
+You can now start using the application!
 
-**Start services (foreground with logs)**
+### Managing the Application
+
+**Start the application**
 ```bash
 docker-compose up
 ```
+This starts all services and displays logs in your terminal. Press `Ctrl+C` to stop.
 
-**Start services in background (detached mode)**
+**Start in background**
 ```bash
 docker-compose up -d
 ```
+Runs the application in the background, freeing up your terminal.
 
-**View logs from all services**
-```bash
-docker-compose logs -f
-```
-
-**View logs from specific service**
-```bash
-docker-compose logs -f api           # FastAPI logs
-docker-compose logs -f db            # PostgreSQL logs
-docker-compose logs -f admin_dashboard
-```
-
-**Stop services (keeps data)**
+**Stop the application**
 ```bash
 docker-compose down
 ```
+Stops all services. Your data (users, models, logs) is preserved.
 
-**Stop and remove all data (fresh start)**
+**View logs**
 ```bash
-docker-compose down -v
+docker-compose logs -f
 ```
-⚠️ This deletes the database, all users, and trained models!
+Shows real-time logs from all services.
 
-**Rebuild images (after code changes)**
-```bash
-docker-compose build --no-cache
-docker-compose up
-```
-
-**Check running containers**
+**Check status**
 ```bash
 docker-compose ps
 ```
+Lists all running containers and their status.
 
-**Access PostgreSQL database directly**
+**Fresh restart (delete all data)**
 ```bash
-docker exec -it finalserver_db psql -U postgres -d finalserver_db
+docker-compose down -v
 ```
+⚠️ **Warning:** This removes the database and all trained models. Use only if you want to start completely fresh.
 
 ### Docker Architecture
 
@@ -341,79 +329,43 @@ docker exec -it finalserver_db psql -U postgres -d finalserver_db
 └─────────────────────────────────────────────────────┘
 ```
 
-### Data Persistence
+### Data Storage
 
-Docker setup includes **volume mounting** for data persistence:
+Your data persists between restarts:
 
-- **Database data**: Stored in Docker volume `postgres_data` (survives restarts)
-- **Trained models**: `./models` directory (accessible on host machine)
-- **Logs**: `./logs` directory (accessible on host machine)
+- **Database**: User accounts and model metadata are stored in a Docker volume
+- **Trained Models**: Saved in the `./models` folder on your computer
+- **Logs**: Application logs are saved in the `./logs` folder
 
-Even after `docker-compose down`, your trained models and logs remain!
+When you stop the application with `docker-compose down`, all your data remains safe. Only `docker-compose down -v` removes the database.
 
-### Environment Variables (Pre-configured)
+### Configuration
 
-All environment variables are **hardcoded in docker-compose.yml** for convenience:
+All configuration is pre-set in the `docker-compose.yml` file. You don't need to create or modify any environment files - the application works out of the box!
 
-```yaml
-DATABASE_URL: postgresql://postgres:postgres@db:5432/finalserver_db
-SECRET_KEY: 9c6629dbe3912dcf7c2682102a6d0a4dea86948679835e11fe3be7cbba0df741
-ALGORITHM: HS256
-ACCESS_TOKEN_EXPIRE_MINUTES: 30
-```
+### Troubleshooting
 
-No need to create a `.env` file when using Docker!
+**"Port already in use" error**
 
-### Troubleshooting Docker
+Another application is using the required ports. Either:
+- Close the conflicting application, or
+- Edit `docker-compose.yml` to use different ports
 
-**Port already in use**
-```bash
-# Check what's using the port
-netstat -ano | findstr :8000    # Windows
-lsof -i :8000                   # macOS/Linux
+**Application won't start**
 
-# Change port in docker-compose.yml
-ports:
-  - "8001:8000"  # Use 8001 on host instead
-```
+1. Check Docker Desktop is running
+2. View logs: `docker-compose logs`
+3. Try rebuilding: `docker-compose build --no-cache`
 
-**Containers not starting**
-```bash
-# Check container status
-docker-compose ps
+**Can't connect to the application**
 
-# View detailed logs
-docker-compose logs
+1. Wait 30 seconds after startup for all services to initialize
+2. Check all containers are running: `docker-compose ps`
+3. Verify you're using `localhost`, not `0.0.0.0`
 
-# Restart specific service
-docker-compose restart api
-```
+**Need to start fresh**
 
-**Database connection errors**
-```bash
-# Verify database is healthy
-docker-compose ps db
-
-# Check database logs
-docker-compose logs db
-
-# Restart database
-docker-compose restart db
-```
-
-**Out of disk space**
-```bash
-# Remove unused Docker resources
-docker system prune -a
-```
-
-**Complete reset**
-```bash
-# Nuclear option: delete everything
-docker-compose down -v
-docker system prune -a
-docker-compose up --build
-```
+Run `docker-compose down -v` to remove all data and start over.
 
 ---
 
