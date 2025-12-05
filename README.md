@@ -48,7 +48,7 @@ A production-ready FastAPI server for machine learning model training and predic
 
 ---
 
-## 🛠️ Tech Stack
+## 🔧 Tech Stack
 
 | Category | Technologies |
 |----------|-------------|

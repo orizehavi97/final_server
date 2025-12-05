@@ -204,9 +204,9 @@ else:
     with col2:
         # Display token balance from session state
         if st.session_state.token_balance is not None:
-            st.metric("Token Balance", f"{st.session_state.token_balance} 🪙")
+            st.metric("Token Balance", f"{st.session_state.token_balance} 🔷")
         else:
-            st.metric("Token Balance", "-- 🪙")
+            st.metric("Token Balance", "-- 🔷")
 
     with col3:
         if st.button("Logout", type="secondary"):

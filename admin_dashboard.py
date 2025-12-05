@@ -93,7 +93,7 @@ try:
 
     with col2:
         st.metric(
-            label="🪙 Total Tokens",
+            label="🔷 Total Tokens",
             value=stats['total_tokens']
         )
 
@@ -132,7 +132,7 @@ try:
                 "Tokens": st.column_config.NumberColumn(
                     "Tokens",
                     width="medium",
-                    format="%d 🪙"
+                    format="%d 🔷"
                 ),
             }
         )
