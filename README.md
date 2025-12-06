@@ -73,27 +73,27 @@ FINALSERVER/
 │   ├── database.py                # Database connection & session
 │   │
 │   ├── models/                    # SQLAlchemy ORM models
-│   │   ├── user.py               # User table schema
-│   │   └── model_metadata.py    # ML model metadata schema
+│   │   ├── user.py                # User table schema
+│   │   └── model_metadata.py      # ML model metadata schema
 │   │
 │   ├── schemas/                   # Pydantic request/response schemas
-│   │   ├── user_schemas.py       # User-related schemas
-│   │   └── ml_schemas.py         # ML-related schemas
+│   │   ├── user_schemas.py        # User-related schemas
+│   │   └── ml_schemas.py          # ML-related schemas
 │   │
 │   ├── routers/                   # API route handlers
-│   │   ├── user_router.py        # User management endpoints
-│   │   └── ml_router.py          # ML operations endpoints
+│   │   ├── user_router.py         # User management endpoints
+│   │   └── ml_router.py           # ML operations endpoints
 │   │
 │   ├── services/                  # Business logic layer
-│   │   ├── user_service.py       # User CRUD & auth logic
-│   │   └── ml_service.py         # ML training & prediction logic
+│   │   ├── user_service.py        # User CRUD & auth logic
+│   │   └── ml_service.py          # ML training & prediction logic
 │   │
 │   └── utils/                     # Utility functions
-│       ├── auth.py               # Password hashing
-│       ├── jwt.py                # JWT token management
-│       ├── dependencies.py       # FastAPI dependencies
-│       ├── logger.py             # Logging configuration
-│       └── rate_limiter.py       # Rate limiting logic
+│       ├── auth.py                # Password hashing
+│       ├── jwt.py                 # JWT token management
+│       ├── dependencies.py        # FastAPI dependencies
+│       ├── logger.py              # Logging configuration
+│       └── rate_limiter.py        # Rate limiting logic
 │
 ├── models/                        # Saved ML models (.pkl files)
 ├── logs/                          # Application log files
@@ -105,9 +105,9 @@ FINALSERVER/
 ├── admin_dashboard.py             # Streamlit admin dashboard
 ├── user_dashboard.py              # Streamlit user interface
 ├── requirements.txt               # Python dependencies
-├── .env                          # Environment variables (not in repo)
-├── .env.example                  # Example environment file
-└── README.md                     # This file
+├── .env                           # Environment variables (not in repo)
+├── .env.example                   # Example environment file
+└── README.md                      # This file
 ```
 
 ---
