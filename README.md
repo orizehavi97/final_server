@@ -105,7 +105,7 @@ FINALSERVER/
 ├── admin_dashboard.py             # Streamlit admin dashboard
 ├── user_dashboard.py              # Streamlit user interface
 ├── requirements.txt               # Python dependencies
-├── .env                           # Environment variables (not in repo)
+├── .env                           # Environment variables (private)
 ├── .env.example                   # Example environment file
 └── README.md                      # This file
 ```
